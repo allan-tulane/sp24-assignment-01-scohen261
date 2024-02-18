@@ -50,28 +50,27 @@ def to_value(v):
     else:
         return int(v)
         
+  
+
 def longest_run_recursive(mylist, key):
-  # Base case: If the list has only one element
-  if len(mylist) == 1:
-      if mylist[0] == key:
-          return Result(1, 1, 1, True)
-      else:
-          return Result(0, 0, 0, False)
+    # Base case: If the list has only one element
+    if len(mylist) == 1:
+        if mylist[0] == key:
+            return Result(1, 1, 1, True)
+        else:
+            return Result(0, 0, 0, False)
 
-  mid = len(mylist) // 2
-  left = longest_run_recursive(mylist[:mid], key)
-  right = longest_run_recursive(mylist[mid:], key)
+    mid = len(mylist) // 2
+    left = longest_run_recursive(mylist[:mid], key)
+    right = longest_run_recursive(mylist[mid:], key)
 
-  left_size = left.left_size
-  right_size = right.right_size
+    # Check if the longest sequence can be extended from the left to the right
+    longest_size = max(left.longest_size, right.longest_size, left.right_size + right.left_size)
 
-  # Check if the longest sequence can be extended from the left to the right
-  longest_size = left.right_size + right.left_size
-  if left.is_entire_range and right.is_entire_range and mylist[mid - 1] == key and mylist[mid] == key:
-      longest_size = left.longest_size + right.longest_size
+    # Check if the entire range is a continuous sequence of the key
+    is_entire_range = left.is_entire_range and right.is_entire_range and mylist[0] == key and mylist[-1] == key
 
-  # Check if the entire range is a continuous sequence of the key
-  is_entire_range = left.is_entire_range and right.is_entire_range and mylist[0] == key and mylist[-1] == key
+    return Result(longest_size, left.left_size, right.right_size, is_entire_range)
 
-  return Result(max(left.longest_size, right.longest_size, longest_size), left_size, right_size, is_entire_range)
+
 
