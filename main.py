@@ -63,23 +63,23 @@ def longest_run_recursive(mylist, key):
   left_result = longest_run_recursive(left_half, key)
   right_result = longest_run_recursive(right_half, key)
 
-  is_entire_range = left_result.entire_range and  right_result.entire_range and left_result.right + right_result.left == len(mylist)
+  is_entire_range = left_result.entire_range and  right_result.is_entire_range and left_result.right_size + right_result.left_size == len(mylist)
 
   cross_run = 0
   if left_half[-1] == key and right_half[0] == key:
-    cross_run = left_result.right + right_result.left
+    cross_run = left_result.right_size + right_result.left_size
 
-  longest = max(left_result.longest, right_result.longest, cross_run)
+  longest_size = max(left_result.longest_size, right_result.longest_size, cross_run)
 
-  left_size = left_result.left if left_result.entire_range else left_result.left
-  right_size = right_result.right if right_result.entire_range else right_result.right
+  left_size = left_result.left_size if left_result.entire_range else left_result.left_size
+  right_size = right_result.right_size if right_result.entire_range else right_result.right_size
 
-  if left_half[-1] == key and left_result.entire_range:
-    left_size += right_result.left
-  if right_half[0] == key and right_result.entire_range:
-    right_size += left_result.right
+  if left_half[-1] == key and left_result.is_entire_range:
+    left_size += right_result.left_size
+  if right_half[0] == key and right_result.is_entire_range:
+    right_size += left_result.right_size
 
-  return Result(left_size, right_size, longest, is_entire_range)
+  return Result(left_size, right_size, longest_size, is_entire_range)
 
 
 
