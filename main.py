@@ -63,7 +63,7 @@ def longest_run_recursive(mylist, key):
   left_result = longest_run_recursive(left_half, key)
   right_result = longest_run_recursive(right_half, key)
 
-  is_entire_range = left_result.entire_range and  right_result.is_entire_range and left_result.right_size + right_result.left_size == len(mylist)
+  is_entire_range = left_result.is_entire_range and  right_result.is_entire_range and left_result.right_size + right_result.left_size == len(mylist)
 
   cross_run = 0
   if left_half[-1] == key and right_half[0] == key:
