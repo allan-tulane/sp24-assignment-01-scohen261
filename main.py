@@ -58,28 +58,23 @@ def longest_run_recursive(mylist, key):
     return Result(int(is_key), int(is_key), int(is_key), is_key)
 
   mid = len(mylist) // 2
-  left_half = mylist[:mid]
-  right_half = mylist[mid:]
-  left_result = longest_run_recursive(left_half, key)
-  right_result = longest_run_recursive(right_half, key)
+  left_result = longest_run_recursive(mylist[:mid], key)
+  right_result = longest_run_recursive(mylist[mid:], key)
 
-  is_entire_range = left_result.is_entire_range and  right_result.is_entire_range and left_result.right_size + right_result.left_size == len(mylist)
+  is_entire_range = left_result.is_entire_range and     right_result.is_entire_range and mylist[0] == key and mylist[-1] == key
 
-  cross_run = 0
-  if left_half[-1] == key and right_half[0] == key:
-    cross_run = left_result.right_size + right_result.left_size
+  cross_run = left_result.right_size + right_result.left_size if mylist[mid - 1] == key and mylist[mid] == key else 0
 
   longest_size = max(left_result.longest_size, right_result.longest_size, cross_run)
 
-  left_size = left_result.left_size if left_result.is_entire_range else left_result.left_size
+  left_size = left_result.left_size if left_result.is_entire_range else   left_result.left_size
   right_size = right_result.right_size if right_result.is_entire_range else right_result.right_size
 
-  if left_half[-1] == key and left_result.is_entire_range:
+  if mylist[mid - 1] == key and left_result.is_entire_range:
     left_size += right_result.left_size
-  if right_half[0] == key and right_result.is_entire_range:
+  if mylist[mid] == key and right_result.is_entire_range:
     right_size += left_result.right_size
 
   return Result(left_size, right_size, longest_size, is_entire_range)
-
 
 
