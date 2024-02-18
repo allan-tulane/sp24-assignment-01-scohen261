@@ -62,8 +62,8 @@ def longest_run_recursive(mylist, key):
     right = longest_run_recursive(mylist[mid:], key)
 
     longest_size = max(left.longest_size, right.longest_size, (left.right_size + right.left_size))
-    left_size = left.left_size if left.left_size == mid else 0
-    right_size = right.right_size if right.right_size == len(mylist) - mid else 0
+    left_size = left.left_size if left.is_entire_range else 0
+    right_size = right.right_size if right.is_entire_range else 0
     is_entire_range = left.is_entire_range and right.is_entire_range
     return Result(left_size, right_size, longest_size, is_entire_range)
 
