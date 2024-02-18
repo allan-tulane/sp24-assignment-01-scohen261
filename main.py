@@ -71,8 +71,8 @@ def longest_run_recursive(mylist, key):
 
   longest_size = max(left_result.longest_size, right_result.longest_size, cross_run)
 
-  left_size = left_result.left_size if left_result.entire_range else left_result.left_size
-  right_size = right_result.right_size if right_result.entire_range else right_result.right_size
+  left_size = left_result.left_size if left_result.is_entire_range else left_result.left_size
+  right_size = right_result.right_size if right_result.is_entire_range else right_result.right_size
 
   if left_half[-1] == key and left_result.is_entire_range:
     left_size += right_result.left_size
