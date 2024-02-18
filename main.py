@@ -53,29 +53,33 @@ def to_value(v):
   
 
 def longest_run_recursive(mylist, key):
-  # Base case: If the list has only one element
   if len(mylist) == 1:
-      if mylist[0] == key:
-          return Result(1, 1, 1, True)
-      else:
-          return Result(0, 0, 0, False)
+    is_key = mylist[0] == key
+    return Result(int(is_key), int(is_key), int(is_key), is_key)
 
   mid = len(mylist) // 2
-  left = longest_run_recursive(mylist[:mid], key)
-  right = longest_run_recursive(mylist[mid:], key)
+  left_half = mylist[:mid]
+  right_half = mylist[mid:]
+  left_result = longest_run_recursive(left_half, key)
+  right_result = longest_run_recursive(right_half, key)
 
-  # Calculate the longest continuous sequence within the current list
-  longest_size = max(left.longest_size, right.longest_size, left.right_size + right.left_size)
+  is_entire_range = left_result.entire_range and  right_result.entire_range and left_result.right + right_result.left == len(mylist)
 
-  # Calculate the left_size and right_size
-  left_size = left.left_size if left.is_entire_range else 0
-  right_size = right.right_size if right.is_entire_range else 0
+  cross_run = 0
+  if left_half[-1] == key and right_half[0] == key:
+    cross_run = left_result.right + right_result.left
 
-  # Check if the entire range is a continuous sequence of the key
-  is_entire_range = left.is_entire_range and right.is_entire_range and mylist[0] == key and mylist[-1] == key
+  longest = max(left_result.longest, right_result.longest, cross_run)
 
-  return Result(longest_size, left_size, right_size, is_entire_range)
+  left_size = left_result.left if left_result.entire_range else left_result.left
+  right_size = right_result.right if right_result.entire_range else right_result.right
 
+  if left_half[-1] == key and left_result.entire_range:
+    left_size += right_result.left
+  if right_half[0] == key and right_result.entire_range:
+    right_size += left_result.right
+
+  return Result(left_size, right_size, longest, is_entire_range)
 
 
 
